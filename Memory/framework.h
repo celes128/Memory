@@ -5,12 +5,9 @@
 #define IN
 #define OUT
 
-inline int failed(int code)
-{
-	return code != 0;
-}
+typedef int Result;
+const Result kSuccess = 0;
+const Result kFailure = -1;
 
-inline int succeeded(int code)
-{
-	return !failed(code);
-}
+inline bool ok(Result code) { return kSuccess == code; }
+inline bool failed(Result code) { return !(ok(code)); }

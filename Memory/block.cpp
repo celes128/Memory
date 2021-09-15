@@ -2,26 +2,25 @@
 #include "block.h"
 
 #include <cstdlib>
-
 #include <cassert>
 
 namespace mem {
 
-	int	block_allocate(block *b, size_t Size)
+	Result block_allocate(block *b, size_t Size)
 	{
-		assert(b != nullptr);
+		assert(b);
 		assert(Size != 0);
 
 		auto p = malloc(Size);
 		if (p) {
 			b->ptr = p;
 			b->size = Size;
-			return 0;// success
+			return kSuccess;
 		}
 		else {
 			b->ptr = nullptr;
 			b->size = 0;
-			return -1;// failure
+			return kFailure;
 		}
 	}
 

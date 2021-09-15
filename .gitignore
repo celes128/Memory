@@ -1,2 +1,11 @@
 .vs/
 Memory/Debug/
+Tests/Debug/
+
+*.obj
+*.idb
+*.pdb
+*.tlog
+*.lastbuildstage
+*.pch
+*.log

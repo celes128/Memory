@@ -2,14 +2,10 @@
 
 #include <cassert>
 
+#include "framework.h"
 #include "block.h"
 
 namespace mem {
-
-	/*
-		USAGE CONDITIONS
-		* The type T must satisfy sizeof(T) >= sizeof(void *).
-	*/
 
 	template <class T>
 	class ObjectPool	{
@@ -23,10 +19,10 @@ namespace mem {
 		}
 
 		/*
-		PRECONDITIONS
-		* maxNumElements >= 1
-		RETURN VALUE
-		Returns 0 iff no error occured.
+			PRECONDITIONS
+			* maxNumElements >= 1
+			RETURN VALUE
+			Returns kSuccess on success else kFailure.
 		*/
 		int Create(size_t maxNumElements)
 		{
@@ -34,15 +30,15 @@ namespace mem {
 
 			m_maxNumElements = maxNumElements;
 
-			auto error = block_allocate(&m_block, sizeof(node) * m_maxNumElements);
-			if (error) {
+			auto result = block_allocate(&m_block, sizeof(node) * m_maxNumElements);
+			if (failed(result)) {
 				m_maxNumElements = 0;
-				return -1;// failure
+				return kFailure;
 			}
 
 			clear_free_list();
 
-			return 0;// success
+			return kSuccess;
 		}
 
 		void Destroy()
@@ -66,20 +62,21 @@ namespace mem {
 		PRECONDITIONS
 		* pp != nullptr
 		RETURN VALUE
-		Returns 0 iff an element was allocated.
+		Returns kSuccess if an element was allocated else kFailure.
 		*/
-		int AllocOneElement(T **pp)
+		Result AllocOneElement(T **pp)
 		{
-			assert(pp != nullptr);
+			assert(pp);
 
-			if (is_full()) {
-				return -1;// failure
-			}
-			else {
+			if (not_full()) {
 				*pp = reinterpret_cast<T *>(m_head);
 				m_head = m_head->next;
-				return 0;// success
+				return kSuccess;
 			}
+			else {
+				return kFailure;
+			}
+
 		}
 
 		/*
@@ -95,10 +92,8 @@ namespace mem {
 		}
 
 	private:
-		int is_full() const
-		{
-			return nullptr == m_head;
-		}
+		bool full() const { return nullptr == m_head; }
+		bool not_full() const { return !full(); }
 
 		void clear_free_list()
 		{
@@ -131,9 +126,5 @@ namespace mem {
 		};
 
 		node *m_head;
-
-		//size_t m_numNodes;
-		//// Number of nodes that the memory block can contain.
-		//// m_numNodes = number free nodes + number of occupied nodes.
 	};
 }

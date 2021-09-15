@@ -17,9 +17,9 @@ namespace Tests
 			Assert::IsTrue(block.size == 0, L"1b");
 
 			const size_t kSize = 256;
-			int error = mem::block_allocate(&block, kSize);
+			auto result = mem::block_allocate(&block, kSize);
 
-			if (!error) {
+			if (ok(result)) {
 				Assert::IsTrue(block.ptr != nullptr, L"2a");
 				Assert::IsTrue(block.size == kSize, L"2b");
 

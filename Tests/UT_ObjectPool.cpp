@@ -19,14 +19,14 @@ namespace Tests
 
 			const size_t kCount = 3;
 
-			auto error = pool.Create(kCount);
+			auto result = pool.Create(kCount);
 
-			Assert::IsTrue(error == 0, L"1");
+			Assert::IsTrue(ok(result), L"1");
 
 			vec2 *pv[kCount];
 			for (size_t i = 0; i < kCount; i++) {
-				error = pool.AllocOneElement(&pv[i]);
-				Assert::IsTrue(error == 0, L"2");
+				result = pool.AllocOneElement(&pv[i]);
+				Assert::IsTrue(ok(result), L"2");
 
 				pv[i]->x = i;
 				pv[i]->y = i;
@@ -38,13 +38,13 @@ namespace Tests
 			}			
 
 			vec2 *p = nullptr;
-			error = pool.AllocOneElement(&p);
-			Assert::IsTrue(error, L"4");
+			result = pool.AllocOneElement(&p);
+			Assert::IsTrue(failed(result), L"4");
 
 			pool.FreeOneElement(&pv[1]);
 
-			error = pool.AllocOneElement(&pv[1]);
-			Assert::IsTrue(error == 0, L"5");
+			result = pool.AllocOneElement(&pv[1]);
+			Assert::IsTrue(ok(result), L"5");
 
 			pv[1]->x = 9;
 			pv[1]->y = 11;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "framework.h"
+
 namespace mem {
 
 	struct block {
@@ -16,6 +18,6 @@ namespace mem {
 		block & operator=(const block &&other) = delete;
 	};
 
-	int	block_allocate(block *b, size_t Size);
+	Result block_allocate(block *b, size_t Size);
 	void block_free(block *b);
 }
