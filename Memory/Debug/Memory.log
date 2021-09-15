@@ -1,3 +1,0 @@
-﻿  ObjectPool.cpp
-ObjectPool.obj : warning LNK4221: Ce fichier objet ne dÚfinit pas de symboles publics jusqu'ici non dÚfinis. Par consÚquent, il ne sera utilisÚ par aucune opÚration de lien utilisant cette bibliothÞque
-  Memory.vcxproj -> E:\Documents\Programmation\Memory\Debug\Memory.lib
